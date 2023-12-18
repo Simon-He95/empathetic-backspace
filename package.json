@@ -1,20 +1,20 @@
 {
   "publisher": "simonhe",
-  "name": "smart-backspace",
-  "displayName": "smart-backspace",
+  "name": "empathetic-backspace",
+  "displayName": "empathetic backspace",
   "version": "0.0.1",
   "packageManager": "pnpm@8.10.5",
-  "description": "smart-backspace",
+  "description": "empathetic backspace",
   "author": "Simon He <https://github.com/Simon-He95>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/Simon-He95",
-  "homepage": "https://github.com/Simon-He95/smart-backspace#readme",
+  "homepage": "https://github.com/Simon-He95/empathetic-backspace#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Simon-He95/smart-backspace"
+    "url": "https://github.com/Simon-He95/empathetic-backspace"
   },
   "bugs": {
-    "url": "https://github.com/Simon-He95/smart-backspace/issues"
+    "url": "https://github.com/Simon-He95/empathetic-backspace/issues"
   },
   "sponsor": {
     "url": "https://github.com/Simon-He95/sponsor"
