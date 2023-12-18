@@ -1,9 +1,10 @@
-import { addEventListener, getLineText, getSelection, updateText } from '@vscode-use/utils'
+import { addEventListener, getConfiguration, getLineText, getSelection, updateText } from '@vscode-use/utils'
 import type { Disposable, ExtensionContext } from 'vscode'
 import { Position, Range } from 'vscode'
 
 export async function activate(context: ExtensionContext) {
   const disposes: Disposable[] = []
+  const tabSize = getConfiguration('editor').get('tabSize') || 2
 
   let flag = false
   disposes.push(addEventListener('text-change', (e) => {
@@ -18,7 +19,7 @@ export async function activate(context: ExtensionContext) {
 
     if (!target)
       return
-    if (target.rangeLength !== 2 && target.rangeLength !== 4)
+    if (target.rangeLength > tabSize)
       return
 
     if (target.range.start.line === target.range.end.line - 1 && target.rangeLength > 1)
