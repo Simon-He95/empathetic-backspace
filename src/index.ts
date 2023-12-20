@@ -13,6 +13,9 @@ export async function activate(context: ExtensionContext) {
     if (e.contentChanges.some((i: any) => i.text.includes('\n')))
       return
     const selection = getSelection()
+
+    if (selection && (selection.selectedTextArray.length > 1)) // 如果是多选操作的时候就不触发
+      return
     const target = e.contentChanges.find((i: any) => (i.text === '') && ((i.range.end.line === selection?.line) || (i.range.start.line === selection?.line)))
     if (selection?.selectedTextArray[0].length)
       return
