@@ -28,7 +28,7 @@ export async function activate(context: ExtensionContext) {
     if (target.range.start.line === target.range.end.line - 1 && target.rangeLength > 1)
       return
     // 判断是前删还是后删
-    const isDeleteFromBefore = (target.range.start.line < selection!.line) || ((target.range.start.line === selection!.line) && (selection!.character > target.range.start.character))
+    const isDeleteFromBefore = (target.range.start.line < selection!.line) || ((target.range.start.line === selection!.line) && (selection!.character >= target.range.start.character))
     // const isNewLine = target.range.start.line !== target.range.end.line
 
     // 删除空内容
