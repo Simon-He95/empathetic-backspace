@@ -94,10 +94,10 @@ export async function activate(context: ExtensionContext) {
     updateText((editor) => {
       flag = true
       // 如果end后面有内容，并且没有空格，删减到保留一个空格会较好
-      if (getLineText(end.line).slice(end.character)[0] === ' ')
-        editor.replace(new Range(start, end), '')
-      else if (start.character !== end.character)
+      if (start.character !== end.character && start.line === end.line)
         editor.replace(new Range(start, end), ' ')
+      else
+        editor.replace(new Range(start, end), '')
 
       setTimeout(() => {
         flag = false
