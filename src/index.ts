@@ -33,7 +33,7 @@ export async function activate(context: ExtensionContext) {
 
     // 删除空内容
     // 判断当前行的位置前面是否是空白
-    const lineText = getLineText(target.range.start.line)
+    const lineText = getLineText(target.range.start.line)!
     let end: Position
     let start: Position
     if (isDeleteFromBefore) {
@@ -48,10 +48,10 @@ export async function activate(context: ExtensionContext) {
       if (index === 0 || (match && match[0].length >= index)) {
         // 前面全是空字符串
         let preLine = end.line
-        while (getLineText(--preLine).trim() === '') {
+        while (getLineText(--preLine)!.trim() === '') {
           //
         }
-        const lineText = getLineText(preLine)
+        const lineText = getLineText(preLine)!
         const match = lineText.match(/\s+$/)
         const _endIndex = match ? lineText.length - match[0].length : lineText.length
         start = new Position(preLine, _endIndex)
@@ -78,10 +78,10 @@ export async function activate(context: ExtensionContext) {
       if (lineText.length <= start_index) {
         // 一整行都是空字符串，考虑将下一行如果是空行也合并了
         let preLine = start.line + 1
-        while (!(getLineText(preLine++).trim())) {
+        while (!(getLineText(preLine++)!.trim())) {
           //
         }
-        const lineText = getLineText(preLine - 1)
+        const lineText = getLineText(preLine - 1)!
         const c = lineText.match(/^(\s+)/) ? lineText.match(/^(\s+)/)![1].length : 0
         end = new Position(preLine - 1, c)
       }
