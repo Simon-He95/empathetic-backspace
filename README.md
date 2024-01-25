@@ -3,7 +3,9 @@
 </p>
 <p align="center"> English | <a href="./README_zh.md">简体中文</a></p>
 
->WIP: It can only match the extra spaces and line forwards that need to be deleted and merged.
+>WIP: Deleted extra spaces and line binds, merge processing
+
+![demo](/assets/demo.gif)
 
 ## :coffee:
 

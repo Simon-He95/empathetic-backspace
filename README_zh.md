@@ -3,7 +3,9 @@
 </p>
 <p align="center"> <a href="./README.md">English</a> | 简体中文</p>
 
->WIP: 只能匹配出需要删除的多余空格和换行，合并处理
+>WIP: 删除的多余空格和换行，合并处理
+
+![demo](/assets/demo.gif)
 
 ## :coffee:
 
