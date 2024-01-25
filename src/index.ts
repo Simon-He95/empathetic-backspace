@@ -5,7 +5,7 @@ export async function activate(context: ExtensionContext) {
   const disposes: Disposable[] = []
   const selection = getSelection()
   let preActive: any = null
-  let preCode: any = null
+  let preCode: any = getActiveText()
   if (selection)
     preActive = getOffsetFromPosition(createPosition(selection.line, selection.character))
   disposes.push(addEventListener('selection-change', (event) => {
@@ -25,7 +25,7 @@ export async function activate(context: ExtensionContext) {
 
     }
     let text = change.text || preCode.slice(getOffsetFromPosition(change.range.start, preCode), getOffsetFromPosition(change.range.end, preCode))
-    if (/\s+\n/.test(text))
+    if (!/^[\s\t\n]$/.test(text) && (/\s+/.test(text) && s?.selectedTextArray[0].length))
       return
     if (!s?.selectedTextArray[0].length && change.text === '')
       text = text.trim()
@@ -39,14 +39,14 @@ export async function activate(context: ExtensionContext) {
 
     if (active === preActive) {
       // 往后删
-      while (code[i] === ' ' || code[i] === '\n') {
+      while (/[\s\n\t]/.test(code[i])) {
         i++
       }
     }
     else {
       // 往前删
       i--
-      while (code[i] === ' ' || code[i] === '\n') {
+      while (/[\s\n\t]/.test(code[i])) {
         i--
       }
       i++
