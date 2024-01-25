@@ -25,6 +25,8 @@ export async function activate(context: ExtensionContext) {
 
     }
     let text = change.text || preCode.slice(getOffsetFromPosition(change.range.start, preCode), getOffsetFromPosition(change.range.end, preCode))
+    if (/\s+\n/.test(text))
+      return
     if (!s?.selectedTextArray[0].length && change.text === '')
       text = text.trim()
 
