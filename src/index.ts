@@ -53,6 +53,8 @@ export async function activate(context: ExtensionContext) {
     }
     if (!/[\s\n]/.test(code.slice(Math.min(i, active), Math.max(i, active))))
       return
+    if (i === active - 1)
+      return
     updateText((edit) => {
       const start = getPosition(i)
       const end = getPosition(active)
