@@ -13,7 +13,10 @@ export async function activate(context: ExtensionContext) {
     preCode = getActiveText()
   }))
 
-  disposes.push(addEventListener('text-change', ({ contentChanges }) => {
+  disposes.push(addEventListener('text-change', ({ contentChanges, reason }) => {
+    if (reason === 1) // 撤销时不干预
+      return
+
     if (contentChanges.length !== 1)
       return
     const change = contentChanges[0]
