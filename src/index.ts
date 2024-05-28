@@ -13,13 +13,20 @@ export async function activate(context: ExtensionContext) {
     preCode = getActiveText()
   }))
 
-  disposes.push(addEventListener('text-change', ({ contentChanges, reason }) => {
-    if (reason === 1) // 撤销时不干预
+  disposes.push(addEventListener('text-change', (args, ...ad) => {
+    const { contentChanges, reason } = args
+    // 如果光标不是在操作的位置说明是其他插件操作,不做处理
+    const selection = getSelection()
+    if (!selection)
       return
-
+    if (reason === 1)
+      return
     if (contentChanges.length !== 1)
       return
     const change = contentChanges[0]
+    const curActive = getOffsetFromPosition(createPosition(selection.line, selection.character))
+    if (change.range.end.line !== selection.line || curActive !== preActive)
+      return
     let s
     try {
       s = getSelection()
