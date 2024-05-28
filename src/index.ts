@@ -13,8 +13,7 @@ export async function activate(context: ExtensionContext) {
     preCode = getActiveText()
   }))
 
-  disposes.push(addEventListener('text-change', (args, ...ad) => {
-    const { contentChanges, reason } = args
+  disposes.push(addEventListener('text-change', ({ contentChanges, reason }) => {
     // 如果光标不是在操作的位置说明是其他插件操作,不做处理
     const selection = getSelection()
     if (!selection)
