@@ -2,7 +2,7 @@
   "publisher": "simonhe",
   "name": "empathetic-backspace",
   "displayName": "empathetic backspace",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "packageManager": "pnpm@8.10.5",
   "description": "empathetic backspace",
   "author": "Simon He <https://github.com/Simon-He95>",
