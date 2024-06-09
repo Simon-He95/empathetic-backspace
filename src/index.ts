@@ -24,7 +24,7 @@ export async function activate(context: ExtensionContext) {
       return
     const change = contentChanges[0]
     const curActive = getOffsetFromPosition(createPosition(selection.line, selection.character))
-    if (change.range.end.line !== selection.line || curActive !== preActive)
+    if ((change.range.end.line !== selection.line && change.range.start.line !== selection.line) || !curActive || (Math.abs(curActive - preActive) > 4))
       return
     let s
     try {
