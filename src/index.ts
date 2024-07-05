@@ -1,4 +1,4 @@
-import { addEventListener, createPosition, createRange, getActiveText, getOffsetFromPosition, getPosition, getSelection, updateText } from '@vscode-use/utils'
+import { addEventListener, createPosition, createRange, getActiveText, getCurrentFileUrl, getOffsetFromPosition, getPosition, getSelection, updateText } from '@vscode-use/utils'
 import type { Disposable, ExtensionContext } from 'vscode'
 
 export async function activate(context: ExtensionContext) {
@@ -13,7 +13,7 @@ export async function activate(context: ExtensionContext) {
     preCode = getActiveText()
   }))
 
-  disposes.push(addEventListener('text-change', ({ contentChanges, reason }) => {
+  disposes.push(addEventListener('text-change', ({ contentChanges, reason, document }) => {
     // 如果光标不是在操作的位置说明是其他插件操作,不做处理
     const selection = getSelection()
     if (!selection)
@@ -21,6 +21,8 @@ export async function activate(context: ExtensionContext) {
     if (reason === 1)
       return
     if (contentChanges.length !== 1)
+      return
+    if (document.uri.fsPath !== getCurrentFileUrl())
       return
     const change = contentChanges[0]
     const curActive = getOffsetFromPosition(createPosition(selection.line, selection.character))
