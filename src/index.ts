@@ -1,19 +1,18 @@
-import { addEventListener, createPosition, createRange, getActiveText, getCurrentFileUrl, getOffsetFromPosition, getPosition, getSelection, updateText } from '@vscode-use/utils'
+import { addEventListener, createExtension, createPosition, createRange, getActiveText, getCurrentFileUrl, getOffsetFromPosition, getPosition, getSelection, updateText } from '@vscode-use/utils'
 import type { Disposable, ExtensionContext } from 'vscode'
 
-export async function activate(context: ExtensionContext) {
-  const disposes: Disposable[] = []
+export const { activate } = createExtension(() => {
   const selection = getSelection()
   let preActive: any = null
   let preCode: any = getActiveText()
   if (selection)
     preActive = getOffsetFromPosition(createPosition(selection.line, selection.character))
-  disposes.push(addEventListener('selection-change', (event) => {
+  addEventListener('selection-change', (event) => {
     preActive = getOffsetFromPosition(event.selections[0].active)
     preCode = getActiveText()
-  }))
+  })
 
-  disposes.push(addEventListener('text-change', ({ contentChanges, reason, document }) => {
+  addEventListener('text-change', ({ contentChanges, reason, document }) => {
     // 如果光标不是在操作的位置说明是其他插件操作,不做处理
     const selection = getSelection()
     if (!selection)
@@ -73,11 +72,5 @@ export async function activate(context: ExtensionContext) {
       const end = getPosition(active)
       edit.replace(createRange(start, end), '')
     })
-  }))
-
-  context.subscriptions.push(...disposes)
-}
-
-export function deactivate() {
-
-}
+  })
+})
