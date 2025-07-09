@@ -30,25 +30,16 @@ export const { activate } = createExtension(() => {
       return
 
     const change = contentChanges[0]
+    
+    // 只处理删除操作：change.text 为空字符串表示删除
+    if (change.text !== '') {
+      return
+    }
+
     const curActive = getOffsetFromPosition(createPosition(selection.line, selection.character))
 
     // 修复 preActive 为 undefined 的情况
     if (preActive === undefined || !curActive) {
-      return
-    }
-
-    // 检查操作范围是否合理 (4 是最大允许的光标移动距离)
-    if ((change.range.end.line !== selection.line && change.range.start.line !== selection.line)
-      || (Math.abs(curActive - preActive) > 4)) {
-      return
-    }
-
-    let s
-    try {
-      s = getSelection()
-    }
-    catch (error) {
-      console.warn('Failed to get selection:', error)
       return
     }
 
@@ -57,28 +48,20 @@ export const { activate } = createExtension(() => {
       return
     }
 
-    let text = change.text || preCode.slice(
-      getOffsetFromPosition(change.range.start, preCode),
-      getOffsetFromPosition(change.range.end, preCode)
-    )
+    // 获取被删除的文本内容
+    const startOffset = getOffsetFromPosition(change.range.start)
+    const endOffset = getOffsetFromPosition(change.range.end)
+    const deletedText = preCode.slice(startOffset, endOffset)
 
-    // 简化条件逻辑：如果不是单个空白字符且包含空白字符且有选中文本，则返回
-    if (!/^[\s\t\n]$/.test(text) && /\s+/.test(text) && s?.selectedTextArray[0]?.length) {
+    // 只有删除的内容是空白字符时才处理
+    if (!/^[\s\t\n]+$/.test(deletedText)) {
       return
     }
 
-    // 如果包含空白字符和换行符，则返回
-    if (/\s+\n/.test(text)) {
-      return
-    }
-
-    // 如果没有选中文本且是删除操作，清理空白字符
-    if (!s?.selectedTextArray[0]?.length && change.text === '') {
-      text = text.trim()
-    }
-
-    // 只处理删除操作（文本为空或换行）
-    if (text !== '' && (text !== '\n' || change.text === '')) {
+    // 检查操作范围是否合理 (对于删除换行符，允许更大的光标移动距离)
+    const maxDistance = deletedText.includes('\n') ? 20 : 4
+    if ((change.range.end.line !== selection.line && change.range.start.line !== selection.line)
+      || (Math.abs(curActive - preActive) > maxDistance)) {
       return
     }
 
